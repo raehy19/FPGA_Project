@@ -2,23 +2,86 @@
 
 
 module HDMI_TOP (
-    input  wire       CLK,            // board clock: 100 MHz on Arty/Basys3/Nexys
-    input  wire       RST_BTN,
-    input  wire       btn1,
-    input  wire       btn2,
-    input  wire       btn3,
-    inout  wire       hdmi_tx_cec,    // CE control bidirectional
-    input  wire       hdmi_tx_hpd,    // hot-plug detect
-    inout  wire       hdmi_tx_rscl,   // DDC bidirectional
-    inout  wire       hdmi_tx_rsda,
-    output wire       hdmi_tx_clk_n,  // HDMI clock differential negative
-    output wire       hdmi_tx_clk_p,  // HDMI clock differential positive
-    output wire [2:0] hdmi_tx_n,      // Three HDMI channels differential negative
-    output wire [2:0] hdmi_tx_p,      // Three HDMI channels differential positive
-    output wire       clk_lock,
-    output wire       de,
-    output wire       led
+    input  wire        CLK,                // board clock: 100 MHz on Arty/Basys3/Nexys
+    input  wire        RST_BTN,
+    input  wire        btn1,
+    input  wire        btn2,
+    input  wire        btn3,
+    inout  wire        hdmi_tx_cec,        // CE control bidirectional
+    input  wire        hdmi_tx_hpd,        // hot-plug detect
+    inout  wire        hdmi_tx_rscl,       // DDC bidirectional
+    inout  wire        hdmi_tx_rsda,
+    output wire        hdmi_tx_clk_n,      // HDMI clock differential negative
+    output wire        hdmi_tx_clk_p,      // HDMI clock differential positive
+    output wire [ 2:0] hdmi_tx_n,          // Three HDMI channels differential negative
+    output wire [ 2:0] hdmi_tx_p,          // Three HDMI channels differential positive
+    output wire        clk_lock,
+    output wire        de,
+    output wire        led,
+    inout  wire [14:0] DDR_addr,
+    inout  wire [ 2:0] DDR_ba,
+    inout  wire        DDR_cas_n,
+    inout  wire        DDR_ck_n,
+    inout  wire        DDR_ck_p,
+    inout  wire        DDR_cke,
+    inout  wire        DDR_cs_n,
+    inout  wire [ 3:0] DDR_dm,
+    inout  wire [31:0] DDR_dq,
+    inout  wire [ 3:0] DDR_dqs_n,
+    inout  wire [ 3:0] DDR_dqs_p,
+    inout  wire        DDR_odt,
+    inout  wire        DDR_ras_n,
+    inout  wire        DDR_reset_n,
+    inout  wire        DDR_we_n,
+    inout  wire        FIXED_IO_ddr_vrn,
+    inout  wire        FIXED_IO_ddr_vrp,
+    inout  wire [53:0] FIXED_IO_mio,
+    inout  wire        FIXED_IO_ps_clk,
+    inout  wire        FIXED_IO_ps_porb,
+    inout  wire        FIXED_IO_ps_srstb,
+    output wire [ 0:0] bclk,
+    output wire [ 0:0] heartbeat,
+    output wire [ 0:0] lrclk,
+    output wire [ 0:0] mclk,
+    input  wire        miso,
+    output wire [ 0:0] mosi,
+    output wire [ 0:0] sclk,
+    output wire [ 0:0] sdata,
+    output wire [ 0:0] ss
 );
+
+    audio_wrapper audio (
+        .DDR_addr(DDR_addr),
+        .DDR_ba(DDR_ba),
+        .DDR_cas_n(DDR_cas_n),
+        .DDR_ck_n(DDR_ck_n),
+        .DDR_ck_p(DDR_ck_p),
+        .DDR_cke(DDR_cke),
+        .DDR_cs_n(DDR_cs_n),
+        .DDR_dm(DDR_dm),
+        .DDR_dq(DDR_dq),
+        .DDR_dqs_n(DDR_dqs_n),
+        .DDR_dqs_p(DDR_dqs_p),
+        .DDR_odt(DDR_odt),
+        .DDR_ras_n(DDR_ras_n),
+        .DDR_reset_n(DDR_reset_n),
+        .DDR_we_n(DDR_we_n),
+        .FIXED_IO_ddr_vrn(FIXED_IO_ddr_vrn),
+        .FIXED_IO_ddr_vrp(FIXED_IO_ddr_vrp),
+        .FIXED_IO_mio(FIXED_IO_mio),
+        .FIXED_IO_ps_clk(FIXED_IO_ps_clk),
+        .FIXED_IO_ps_porb(FIXED_IO_ps_porb),
+        .FIXED_IO_ps_srstb(FIXED_IO_ps_srstb),
+        .bclk(bclk),
+        .heartbeat(heartbeat),
+        .lrclk(lrclk),
+        .mclk(mclk),
+        .miso(miso),
+        .mosi(mosi),
+        .sclk(sclk),
+        .sdata(sdata),
+        .ss(ss)
+    );
 
     wire rst = RST_BTN;
     // Display Clocks
@@ -38,7 +101,6 @@ module HDMI_TOP (
         .o_clk_1x(pix_clk),
         .o_clk_5x(pix_clk_5x),
         .o_locked(clk_lock)
-
     );
 
     // Display Timings
