@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps `default_nettype none
+`timescale 1ns / 1ps `default_nettype wire
 
 
 module HDMI_TOP (
@@ -39,18 +39,18 @@ module HDMI_TOP (
     inout  wire        FIXED_IO_ps_clk,
     inout  wire        FIXED_IO_ps_porb,
     inout  wire        FIXED_IO_ps_srstb,
-    output wire [ 0:0] bclk,
-    output wire [ 0:0] heartbeat,
-    output wire [ 0:0] lrclk,
-    output wire [ 0:0] mclk,
+    output wire        bclk,
+    output wire        heartbeat,
+    output wire        lrclk,
+    output wire        mclk,
     input  wire        miso,
-    output wire [ 0:0] mosi,
-    output wire [ 0:0] sclk,
-    output wire [ 0:0] sdata,
-    output wire [ 0:0] ss
+    output wire        mosi,
+    output wire        sclk,
+    output wire        sdata,
+    output wire        ss
 );
 
-    audio_wrapper audio (
+    audio_system_wrapper audio (
         .DDR_addr(DDR_addr),
         .DDR_ba(DDR_ba),
         .DDR_cas_n(DDR_cas_n),

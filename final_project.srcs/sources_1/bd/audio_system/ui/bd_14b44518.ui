@@ -1,0 +1,57 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"0.743153",
+   "Default View_TopLeft":"-79,-4",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.0r6  2020-01-29 bk=1.5227 VDI=41 GEI=36 GUI=JA:10.0 non-TLS
+#  -string -flagsOSRD
+preplace port DDR -pg 1 -lvl 5 -x 1460 -y 330 -defaultsOSRD
+preplace port FIXED_IO -pg 1 -lvl 5 -x 1460 -y 530 -defaultsOSRD
+preplace port bclk -pg 1 -lvl 5 -x 1460 -y 190 -defaultsOSRD
+preplace port ss -pg 1 -lvl 5 -x 1460 -y 460 -defaultsOSRD
+preplace port sclk -pg 1 -lvl 5 -x 1460 -y 420 -defaultsOSRD
+preplace port sdata -pg 1 -lvl 5 -x 1460 -y 230 -defaultsOSRD
+preplace port mosi -pg 1 -lvl 5 -x 1460 -y 440 -defaultsOSRD
+preplace port lrclk -pg 1 -lvl 5 -x 1460 -y 210 -defaultsOSRD
+preplace port heartbeat -pg 1 -lvl 5 -x 1460 -y 590 -defaultsOSRD
+preplace port mclk -pg 1 -lvl 5 -x 1460 -y 80 -defaultsOSRD
+preplace port miso -pg 1 -lvl 0 -x 0 -y 520 -defaultsOSRD
+preplace inst processing_system7_0 -pg 1 -lvl 1 -x 230 -y 400 -defaultsOSRD
+preplace inst proc_sys_reset_0 -pg 1 -lvl 1 -x 230 -y 100 -defaultsOSRD
+preplace inst axi_interconnect_0 -pg 1 -lvl 2 -x 620 -y 180 -defaultsOSRD
+preplace inst myPrescaler_0 -pg 1 -lvl 3 -x 980 -y 80 -defaultsOSRD
+preplace inst axi_fifo_mm_s_0 -pg 1 -lvl 3 -x 980 -y 200 -defaultsOSRD
+preplace inst axi_fifo_mm_s_1 -pg 1 -lvl 3 -x 980 -y 430 -defaultsOSRD
+preplace inst myI2STx_v1_0_0 -pg 1 -lvl 4 -x 1300 -y 210 -defaultsOSRD
+preplace inst mySPIRxTx_v1_0_0 -pg 1 -lvl 4 -x 1300 -y 430 -defaultsOSRD
+preplace inst myPrescaler_1 -pg 1 -lvl 4 -x 1300 -y 590 -defaultsOSRD
+preplace netloc myI2STx_v1_0_0_bclk 1 4 1 NJ 190
+preplace netloc mySPIRxTx_v1_0_0_ss 1 4 1 NJ 460
+preplace netloc mySPIRxTx_v1_0_0_sclk 1 4 1 NJ 420
+preplace netloc myI2STx_v1_0_0_sdata 1 4 1 NJ 230
+preplace netloc mySPIRxTx_v1_0_0_mosi 1 4 1 NJ 440
+preplace netloc myI2STx_v1_0_0_lrclk 1 4 1 NJ 210
+preplace netloc myPrescaler_1_prescale 1 4 1 NJ 590
+preplace netloc myPrescaler_0_prescale 1 3 2 1150 80 NJ
+preplace netloc miso_0_1 1 0 4 NJ 520 NJ 520 NJ 520 1160J
+preplace netloc processing_system7_0_FCLK_CLK0 1 0 4 20 200 450 20 780 290 1150
+preplace netloc processing_system7_0_FCLK_RESET0_N 1 0 2 30 210 430
+preplace netloc proc_sys_reset_0_interconnect_aresetn 1 1 1 N 120
+preplace netloc S00_ARESETN_1 1 1 3 440 10 790 280 1170
+preplace netloc processing_system7_0_DDR 1 1 4 NJ 350 800J 340 NJ 340 1440J
+preplace netloc processing_system7_0_FIXED_IO 1 1 4 440J 530 NJ 530 NJ 530 NJ
+preplace netloc processing_system7_0_M_AXI_GP0 1 1 1 460 80n
+preplace netloc axi_fifo_mm_s_0_AXI_STR_TXD 1 3 1 N 180
+preplace netloc axi_fifo_mm_s_1_AXI_STR_TXD 1 3 1 N 400
+preplace netloc mySPIRxTx_v1_0_0_m00_axis 1 2 3 810 330 NJ 330 1430
+preplace netloc axi_interconnect_0_M01_AXI 1 2 1 N 180
+preplace netloc axi_interconnect_0_M00_AXI 1 2 1 770 160n
+levelinfo -pg 1 0 230 620 980 1300 1460
+pagesize -pg 1 -db -bbox -sgen -80 0 1580 650
+"
+}
+{
+   "da_axi4_cnt":"2",
+   "da_clkrst_cnt":"2",
+   "da_ps7_cnt":"1"
+}
