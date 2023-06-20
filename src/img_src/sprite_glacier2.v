@@ -74,7 +74,7 @@ module sprite_glacier2 (
     assign o_sprite_hit = ((sprite_hit_y & sprite_hit_x) & (selected_palette != 2'd0));
 
     always @(posedge i_v_sync) begin
-        if (sprite_y > 500) begin
+        if (sprite_x <= 0 || sprite_y > 720 - 128) begin
             sprite_x <= 16'd340 - 16'd64;
             sprite_y <= 16'd160 - 16'd64;
         end else begin

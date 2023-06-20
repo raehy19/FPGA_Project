@@ -75,7 +75,7 @@ module sprite_glacier1 (
 
 
     always @(posedge i_v_sync) begin
-        if (sprite_y > 500) begin
+        if (sprite_x >= 1280 - 128 || sprite_y > 720 - 128) begin
             sprite_x <= 16'd940 - 16'd64;
             sprite_y <= 16'd160 - 16'd64;
         end else begin

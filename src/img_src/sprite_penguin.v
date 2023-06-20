@@ -311,14 +311,32 @@ module sprite_penguin (
     assign sprite_render_y = (i_y - sprite_y) >> 2;
 
     wire [2:0] selected_palette;
+    reg  [3:0] penguin_state = 4'd0;
 
-    assign selected_palette = penguin_default[sprite_render_y][sprite_render_x];
+    assign selected_palette = (penguin_state == 4'd0) ? penguin_default[sprite_render_y][sprite_render_x] 
+                           :  (penguin_state == 4'd1) ? penguin_right[sprite_render_y][sprite_render_x]  
+                           :  (penguin_state == 4'd2) ? penguin_left[sprite_render_y][sprite_render_x]  
+                           :  (penguin_state == 4'd3) ? penguin_jump1[sprite_render_y][sprite_render_x]  
+                           :  (penguin_state == 4'd4) ? penguin_jump2[sprite_render_y][sprite_render_x]  
+                           :  (penguin_state == 4'd5) ? penguin_jump3[sprite_render_y][sprite_render_x]  
+                           :  (penguin_state == 4'd6) ? penguin_coin_effect[sprite_render_y][sprite_render_x]  
+                           :  penguin_obstacle_effect[sprite_render_y][sprite_render_x];
 
-    assign o_red    = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][2] : 8'hXX;
-    assign o_green  = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][1] : 8'hXX;
-    assign o_blue   = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][0] : 8'hXX;
+    assign o_red = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][2] : 8'hXX;
+    assign o_green = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][1] : 8'hXX;
+    assign o_blue = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][0] : 8'hXX;
     assign o_sprite_hit = ((sprite_hit_y & sprite_hit_x) & (selected_palette != 2'd0));
 
-    reg [3:0] penguin_state = 4'd0;
+
+    integer cnt = 0;
+
+    always @(posedge i_v_sync) begin
+        if (cnt < 25) penguin_state = 4'd0;
+        else if (cnt < 50) penguin_state = 4'd1;
+        else if (cnt < 75) penguin_state = 4'd0;
+        else if (cnt < 100) penguin_state = 4'd2;
+        ++cnt;
+        if (cnt > 99) cnt = 0;
+    end
 
 endmodule
