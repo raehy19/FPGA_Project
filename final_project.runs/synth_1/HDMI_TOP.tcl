@@ -90,13 +90,13 @@ set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 read_verilog -library xil_defaultlib -sv {
-  C:/EEE3313_projects/final_project/src/sprite_compositor.v
-  C:/EEE3313_projects/final_project/src/sprite_compositor_2.v
+  C:/EEE3313_projects/final_project/src/img_src/sprite_glacier1.v
+  C:/EEE3313_projects/final_project/src/img_src/sprite_glacier2.v
 }
 read_verilog -library xil_defaultlib {
   C:/EEE3313_projects/final_project/src/async_reset.v
   C:/EEE3313_projects/final_project/final_project.gen/sources_1/bd/audio_system/hdl/audio_system_wrapper.v
-  C:/EEE3313_projects/final_project/final_project.srcs/sources_1/new/background_img.v
+  C:/EEE3313_projects/final_project/src/img_src/background_img.v
   C:/EEE3313_projects/final_project/src/display_clocks.v
   C:/EEE3313_projects/final_project/src/display_timings.v
   C:/EEE3313_projects/final_project/src/dvi_generator.v
