@@ -11,13 +11,14 @@ module gfx (
     output reg [7:0] o_red,
     output reg [7:0] o_green,
     output reg [7:0] o_blue
-
 );
+
     wire [7:0] bg_red, bg_green, bg_blue;
+    wire [7:0] student_id_red, student_id_green, student_id_blue;
     wire [7:0] glacier1_red, glacier1_green, glacier1_blue;
     wire [7:0] glacier2_red, glacier2_green, glacier2_blue;
     wire [7:0] penguin_red, penguin_green, penguin_blue;
-    wire glacier1_hit, glacier2_hit, penguin_hit;
+    wire student_id_hit, glacier1_hit, glacier2_hit, penguin_hit;
 
     background_img bgimg (
         .i_x    (i_x),
@@ -25,6 +26,15 @@ module gfx (
         .o_red  (bg_red),
         .o_green(bg_green),
         .o_blue (bg_blue)
+    );
+
+    sprite_student_id student_id (
+        .i_x         (i_x),
+        .i_y         (i_y),
+        .o_red       (student_id_red),
+        .o_green     (student_id_green),
+        .o_blue      (student_id_blue),
+        .o_sprite_hit(student_id_hit)
     );
 
     sprite_glacier1 glacier1 (
@@ -58,7 +68,11 @@ module gfx (
     );
 
     always @(*) begin
-        if (glacier1_hit == 1) begin
+        if (student_id_hit == 1) begin
+            o_red   = student_id_red;
+            o_green = student_id_green;
+            o_blue  = student_id_blue;
+        end else if (glacier1_hit == 1) begin
             o_red   = glacier1_red;
             o_green = glacier1_green;
             o_blue  = glacier1_blue;
@@ -75,7 +89,6 @@ module gfx (
             o_green = bg_green;
             o_blue  = bg_blue;
         end
-
     end
 
 endmodule
