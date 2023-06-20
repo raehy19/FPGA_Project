@@ -13,14 +13,10 @@ module gfx (
     output reg [7:0] o_blue
 
 );
-    wire sprite_hit, sprite2_hit;
     wire [7:0] bg_red, bg_green, bg_blue;
-    wire [7:0] sprite_red;
-    wire [7:0] sprite_green;
-    wire [7:0] sprite_blue;
-    wire [7:0] sprite2_red;
-    wire [7:0] sprite2_green;
-    wire [7:0] sprite2_blue;
+    wire [7:0] glacier1_red, glacier1_green, glacier1_blue;
+    wire [7:0] glacier2_red, glacier2_green, glacier2_blue;
+    wire glacier1_hit, glacier2_hit;
 
     background_img bgimg (
         .i_x    (i_x),
@@ -30,39 +26,36 @@ module gfx (
         .o_blue (bg_blue)
     );
 
-
-    sprite_compositor sprite_compositor_1 (
+    sprite_glacier1 glacier1 (
         .i_x         (i_x),
         .i_y         (i_y),
         .i_v_sync    (i_v_sync),
-        .o_red       (sprite_red),
-        .o_green     (sprite_green),
-        .o_blue      (sprite_blue),
-        .o_sprite_hit(sprite_hit)
+        .o_red       (glacier1_red),
+        .o_green     (glacier1_green),
+        .o_blue      (glacier1_blue),
+        .o_sprite_hit(glacier1_hit)
     );
 
-    sprite_compositor_2 sprite_compositor_2 (
+    sprite_glacier2 glacier2 (
         .i_x         (i_x),
         .i_y         (i_y),
-        .i_btn1      (BTN1),
-        .i_btn2      (BTN2),
-        .i_btn3      (BTN3),
         .i_v_sync    (i_v_sync),
-        .o_red       (sprite2_red),
-        .o_green     (sprite2_green),
-        .o_blue      (sprite2_blue),
-        .o_sprite_hit(sprite2_hit)
+        .o_red       (glacier2_red),
+        .o_green     (glacier2_green),
+        .o_blue      (glacier2_blue),
+        .o_sprite_hit(glacier2_hit)
     );
+
 
     always @(*) begin
-        if (sprite_hit == 1) begin
-            o_red   = sprite_red;
-            o_green = sprite_green;
-            o_blue  = sprite_blue;
-        end else if (sprite2_hit == 1) begin
-            o_red   = sprite2_red;
-            o_green = sprite2_green;
-            o_blue  = sprite2_blue;
+        if (glacier1_hit == 1) begin
+            o_red   = glacier1_red;
+            o_green = glacier1_green;
+            o_blue  = glacier1_blue;
+        end else if (glacier2_hit == 1) begin
+            o_red   = glacier2_red;
+            o_green = glacier2_green;
+            o_blue  = glacier2_blue;
         end else begin
             o_red   = bg_red;
             o_green = bg_green;
