@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 
 module sprite_glacier2 (
     input wire [15:0] i_x,
@@ -9,11 +11,11 @@ module sprite_glacier2 (
     output wire o_sprite_hit
 );
 
-    reg [15:0] sprite_x = 16'd440;
-    reg [15:0] sprite_y = 16'd160;
+    reg [15:0] sprite_x = 16'd340 - 16'd64;
+    reg [15:0] sprite_y = 16'd160 - 16'd64;
     wire sprite_hit_x, sprite_hit_y;
-    wire [3:0] sprite_render_x;
-    wire [3:0] sprite_render_y;
+    wire [7:0] sprite_render_x;
+    wire [7:0] sprite_render_y;
 
     parameter [0:2][2:0][7:0] palette_colors = {
         {8'h00, 8'h00, 8'h00},  // background
@@ -72,15 +74,13 @@ module sprite_glacier2 (
     assign o_sprite_hit = ((sprite_hit_y & sprite_hit_x) & (selected_palette != 2'd0));
 
     always @(posedge i_v_sync) begin
-
-        if (sprite_y > 600) begin
-            sprite_x <= 16'd440;
-            sprite_y <= 16'd160;
+        if (sprite_y > 500) begin
+            sprite_x <= 16'd340 - 16'd64;
+            sprite_y <= 16'd160 - 16'd64;
         end else begin
             sprite_y <= sprite_y + 1;
             sprite_x <= sprite_x - 1;
         end
-
     end
 
 

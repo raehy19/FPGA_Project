@@ -16,7 +16,8 @@ module gfx (
     wire [7:0] bg_red, bg_green, bg_blue;
     wire [7:0] glacier1_red, glacier1_green, glacier1_blue;
     wire [7:0] glacier2_red, glacier2_green, glacier2_blue;
-    wire glacier1_hit, glacier2_hit;
+    wire [7:0] penguin_red, penguin_green, penguin_blue;
+    wire glacier1_hit, glacier2_hit, penguin_hit;
 
     background_img bgimg (
         .i_x    (i_x),
@@ -46,6 +47,15 @@ module gfx (
         .o_sprite_hit(glacier2_hit)
     );
 
+    sprite_penguin penguin (
+        .i_x         (i_x),
+        .i_y         (i_y),
+        .i_v_sync    (i_v_sync),
+        .o_red       (penguin_red),
+        .o_green     (penguin_green),
+        .o_blue      (penguin_blue),
+        .o_sprite_hit(penguin_hit)
+    );
 
     always @(*) begin
         if (glacier1_hit == 1) begin
@@ -56,6 +66,10 @@ module gfx (
             o_red   = glacier2_red;
             o_green = glacier2_green;
             o_blue  = glacier2_blue;
+        end else if (penguin_hit == 1) begin
+            o_red   = penguin_red;
+            o_green = penguin_green;
+            o_blue  = penguin_blue;
         end else begin
             o_red   = bg_red;
             o_green = bg_green;
