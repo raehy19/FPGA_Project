@@ -1,6 +1,8 @@
 set_property SRC_FILE_INFO {cfile:C:/EEE3313_projects/final_project/constraints/xdc.xdc rfile:../../../constraints/xdc.xdc id:1} [current_design]
 set_property src_info {type:XDC file:1 line:11 export:INPUT save:INPUT read:READ} [current_design]
 set_property -dict { PACKAGE_PIN H16   IOSTANDARD LVCMOS33  } [get_ports {CLK}]; #IO_L11N_T1_SRCC_35 Sch=hdmi_tx_clk_n
+set_property src_info {type:XDC file:1 line:14 export:INPUT save:INPUT read:READ} [current_design]
+create_clock -period 5.000 -name sys_clk_pin -waveform {0.000 5.000} -add [get_ports CLK]
 set_property src_info {type:XDC file:1 line:57 export:INPUT save:INPUT read:READ} [current_design]
 set_property -dict { PACKAGE_PIN L17   IOSTANDARD TMDS_33  } [get_ports { hdmi_tx_clk_n }]; #IO_L11N_T1_SRCC_35 Sch=hdmi_tx_clk_n
 set_property src_info {type:XDC file:1 line:58 export:INPUT save:INPUT read:READ} [current_design]

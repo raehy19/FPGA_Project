@@ -96,12 +96,12 @@ read_verilog -library xil_defaultlib -sv {
 read_verilog -library xil_defaultlib {
   C:/EEE3313_projects/final_project/src/async_reset.v
   C:/EEE3313_projects/final_project/final_project.gen/sources_1/bd/audio_system/hdl/audio_system_wrapper.v
+  C:/EEE3313_projects/final_project/final_project.srcs/sources_1/new/background_img.v
   C:/EEE3313_projects/final_project/src/display_clocks.v
   C:/EEE3313_projects/final_project/src/display_timings.v
   C:/EEE3313_projects/final_project/src/dvi_generator.v
   C:/EEE3313_projects/final_project/src/gfx_inst.v
   C:/EEE3313_projects/final_project/src/serializer_10to1.v
-  C:/EEE3313_projects/final_project/src/test_card_simple.v
   C:/EEE3313_projects/final_project/src/tmds_encoder_dvi.v
   C:/EEE3313_projects/final_project/src/HDMI_TOP.v
 }

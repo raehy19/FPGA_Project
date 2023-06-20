@@ -1,7 +1,7 @@
 Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2020.2 (win64) Build 3064766 Wed Nov 18 09:12:45 MST 2020
-| Date         : Mon Jun 19 19:28:49 2023
+| Date         : Tue Jun 20 11:49:09 2023
 | Host         : RAEHYEON-AERO15 running 64-bit major release  (build 9200)
 | Command      : report_drc -file HDMI_TOP_drc_opted.rpt -pb HDMI_TOP_drc_opted.pb -rpx HDMI_TOP_drc_opted.rpx
 | Design       : HDMI_TOP

@@ -13,10 +13,8 @@ module gfx (
     output reg [7:0] o_blue
 
 );
-    wire bg_hit, sprite_hit, sprite2_hit;
-    wire [7:0] bg_red;
-    wire [7:0] bg_green;
-    wire [7:0] bg_blue;
+    wire sprite_hit, sprite2_hit;
+    wire [7:0] bg_red, bg_green, bg_blue;
     wire [7:0] sprite_red;
     wire [7:0] sprite_green;
     wire [7:0] sprite_blue;
@@ -24,13 +22,14 @@ module gfx (
     wire [7:0] sprite2_green;
     wire [7:0] sprite2_blue;
 
-    test_card_simple test_card_simple_1 (
-        .i_x     (i_x),
-        .o_red   (bg_red),
-        .o_green (bg_green),
-        .o_blue  (bg_blue),
-        .o_bg_hit(bg_hit)
+    background_img bgimg (
+        .i_x    (i_x),
+        .i_y    (i_y),
+        .o_red  (bg_red),
+        .o_green(bg_green),
+        .o_blue (bg_blue)
     );
+
 
     sprite_compositor sprite_compositor_1 (
         .i_x         (i_x),
