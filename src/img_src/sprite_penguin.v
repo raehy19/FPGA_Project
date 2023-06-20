@@ -329,12 +329,49 @@ module sprite_penguin (
 
 
     integer cnt = 0;
+    integer jumpcnt = 0;
+    reg jumping = 0;
+
 
     always @(posedge i_v_sync) begin
-        if (cnt < 25) penguin_state = 4'd0;
-        else if (cnt < 50) penguin_state = 4'd1;
-        else if (cnt < 75) penguin_state = 4'd0;
-        else if (cnt < 100) penguin_state = 4'd2;
+        // btn control
+        // right move 
+        if (i_btn1 && cnt % 20 == 0) begin
+            if (sprite_x == 16'd640 - 16'd64) sprite_x <= 16'd940 - 16'd64;
+            if (sprite_x == 16'd340 - 16'd64) sprite_x <= 16'd640 - 16'd64;
+        end
+        // left move 
+        if (i_btn3 && cnt % 20 == 0) begin
+            if (sprite_x == 16'd640 - 16'd64) sprite_x <= 16'd340 - 16'd64;
+            if (sprite_x == 16'd940 - 16'd64) sprite_x <= 16'd640 - 16'd64;
+        end
+        // jump
+        if (i_btn2 && cnt % 20 == 0) begin
+            jumping <= 1;
+        end
+
+
+        // jump or walk
+        // jump
+        if (jumping) begin
+            if (jumpcnt < 50) penguin_state <= 4'd3;
+            else if (jumpcnt < 100) penguin_state <= 4'd4;
+            else if (jumpcnt < 150) penguin_state <= 4'd5;
+            else if (jumpcnt < 200) penguin_state <= 4'd4;
+            else if (jumpcnt < 250) penguin_state <= 4'd3;
+            else begin
+                penguin_state <= 4'd0;
+                jumpcnt <= 0;
+                jumping <= 0;
+            end
+            jumpcnt++;
+        end  // walk 
+        else if (cnt < 25) penguin_state <= 4'd0;
+        else if (cnt < 50) penguin_state <= 4'd1;
+        else if (cnt < 75) penguin_state <= 4'd0;
+        else if (cnt < 100) penguin_state <= 4'd2;
+
+        // cnt
         ++cnt;
         if (cnt > 99) cnt = 0;
     end
