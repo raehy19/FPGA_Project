@@ -56,11 +56,6 @@ module sprite_glacier1 (
         {4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0}
     };
 
-    initial begin
-        sprite_y = 160;
-        sprite_x = (-16 * sprite_y + 9600) / 15 - 200;
-    end
-
     assign sprite_hit_x = (i_x >= sprite_x) && (i_x < sprite_x + 128);
     assign sprite_hit_y = (i_y >= sprite_y) && (i_y < sprite_y + 128);
     assign sprite_render_x = (i_x - sprite_x) >> 2;
