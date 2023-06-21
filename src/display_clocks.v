@@ -2,7 +2,7 @@
 
 
 module display_clocks #(
-    MULT_MASTER = 37.12,  // master clock multiplier (2.000-64.000)
+    MULT_MASTER = 4.000,  // master clock multiplier (2.000-64.000)
     DIV_MASTER  = 5,      // master clock divider (1-106)
     DIV_5X      = 2.0,    // 5x clock divider (1-128)
     DIV_1X      = 10,     // 1x clock divider (1-128)

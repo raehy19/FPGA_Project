@@ -74,7 +74,78 @@
   <FileSets Version="1" Minor="31">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
       <Filter Type="Srcs"/>
+      <File Path="$PPRDIR/src/myPrescaler.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/src/myI2STx_v1_0.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/src/mySPIRxTx_v1_0.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/bd/audio_system/audio_system.bd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_proc_sys_reset_0_0/audio_system_proc_sys_reset_0_0.xci">
+          <Proxy FileSetName="audio_system_proc_sys_reset_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_auto_pc_0/audio_system_auto_pc_0.xci">
+          <Proxy FileSetName="audio_system_auto_pc_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_auto_pc_1/audio_system_auto_pc_1.xci">
+          <Proxy FileSetName="audio_system_auto_pc_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_myI2STx_v1_0_0_0/audio_system_myI2STx_v1_0_0_0.xci">
+          <Proxy FileSetName="audio_system_myI2STx_v1_0_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_xbar_0/audio_system_xbar_0.xci">
+          <Proxy FileSetName="audio_system_xbar_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_mySPIRxTx_v1_0_0_0/audio_system_mySPIRxTx_v1_0_0_0.xci">
+          <Proxy FileSetName="audio_system_mySPIRxTx_v1_0_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_processing_system7_0_0/audio_system_processing_system7_0_0.xci">
+          <Proxy FileSetName="audio_system_processing_system7_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_myPrescaler_0_0/audio_system_myPrescaler_0_0.xci">
+          <Proxy FileSetName="audio_system_myPrescaler_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_axi_fifo_mm_s_0_0/audio_system_axi_fifo_mm_s_0_0.xci">
+          <Proxy FileSetName="audio_system_axi_fifo_mm_s_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_axi_fifo_mm_s_1_0/audio_system_axi_fifo_mm_s_1_0.xci">
+          <Proxy FileSetName="audio_system_axi_fifo_mm_s_1_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_auto_pc_2/audio_system_auto_pc_2.xci">
+          <Proxy FileSetName="audio_system_auto_pc_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_myPrescaler_1_0/audio_system_myPrescaler_1_0.xci">
+          <Proxy FileSetName="audio_system_myPrescaler_1_0"/>
+        </CompFileExtendedInfo>
+      </File>
       <File Path="$PPRDIR/src/async_reset.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PGENDIR/sources_1/bd/audio_system/hdl/audio_system_wrapper.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -222,82 +293,6 @@
       </File>
       <File Path="$PPRDIR/src/HDMI_TOP.v">
         <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/src/myPrescaler.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/src/myI2STx_v1_0.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/src/mySPIRxTx_v1_0.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/bd/audio_system/audio_system.bd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_proc_sys_reset_0_0/audio_system_proc_sys_reset_0_0.xci">
-          <Proxy FileSetName="audio_system_proc_sys_reset_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_auto_pc_0/audio_system_auto_pc_0.xci">
-          <Proxy FileSetName="audio_system_auto_pc_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_auto_pc_1/audio_system_auto_pc_1.xci">
-          <Proxy FileSetName="audio_system_auto_pc_1"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_myI2STx_v1_0_0_0/audio_system_myI2STx_v1_0_0_0.xci">
-          <Proxy FileSetName="audio_system_myI2STx_v1_0_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_xbar_0/audio_system_xbar_0.xci">
-          <Proxy FileSetName="audio_system_xbar_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_mySPIRxTx_v1_0_0_0/audio_system_mySPIRxTx_v1_0_0_0.xci">
-          <Proxy FileSetName="audio_system_mySPIRxTx_v1_0_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_processing_system7_0_0/audio_system_processing_system7_0_0.xci">
-          <Proxy FileSetName="audio_system_processing_system7_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_myPrescaler_0_0/audio_system_myPrescaler_0_0.xci">
-          <Proxy FileSetName="audio_system_myPrescaler_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_axi_fifo_mm_s_0_0/audio_system_axi_fifo_mm_s_0_0.xci">
-          <Proxy FileSetName="audio_system_axi_fifo_mm_s_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_axi_fifo_mm_s_1_0/audio_system_axi_fifo_mm_s_1_0.xci">
-          <Proxy FileSetName="audio_system_axi_fifo_mm_s_1_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_auto_pc_2/audio_system_auto_pc_2.xci">
-          <Proxy FileSetName="audio_system_auto_pc_2"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="audio_system.bd" FileRelPathName="ip/audio_system_myPrescaler_1_0/audio_system_myPrescaler_1_0.xci">
-          <Proxy FileSetName="audio_system_myPrescaler_1_0"/>
-        </CompFileExtendedInfo>
-      </File>
-      <File Path="$PGENDIR/sources_1/bd/audio_system/hdl/audio_system_wrapper.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>

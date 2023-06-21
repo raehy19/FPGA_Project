@@ -5,17 +5,24 @@ module sprite_distance (
     input wire [15:0] i_x,
     input wire [15:0] i_y,
     input wire i_v_sync,
+    input wire i_is_dead,
     output wire [7:0] o_red,
     output wire [7:0] o_green,
     output wire [7:0] o_blue,
-    output wire o_sprite_hit
+    output wire o_sprite_hit,
+    output reg o_is_finished
 );
 
     reg [15:0] sprite_x = 16'd10;
     reg [15:0] sprite_y = 16'd10;
+    reg [15:0] sprite_fx = 16'd400;
+    reg [15:0] sprite_fy = 16'd280;
     wire sprite_hit_x, sprite_hit_y;
-    wire [8:0] sprite_render_x;
-    wire [8:0] sprite_render_y;
+    wire sprite_hit_fx, sprite_hit_fy;
+    wire [7:0] sprite_render_x;
+    wire [7:0] sprite_render_y;
+    wire [7:0] sprite_render_fx;
+    wire [7:0] sprite_render_fy;
 
 
     localparam [0:1][2:0][7:0] palette_colors = {
@@ -33,6 +40,18 @@ module sprite_distance (
         {4'd0, 4'd1, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd1, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd1},
         {4'd0, 4'd1, 4'd1, 4'd1, 4'd0, 4'd0, 4'd1, 4'd0, 4'd0, 4'd1, 4'd1, 4'd1, 4'd0, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd0, 4'd1, 4'd1, 4'd0, 4'd0, 4'd1, 4'd1, 4'd1, 4'd1, 4'd1, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd1},
         {4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0}
+    };
+
+    localparam [0:8][0:35][3:0] finish = {
+        {4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0},
+        {4'd0, 4'd1, 4'd1, 4'd1, 4'd1, 4'd1, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd1, 4'd1, 4'd1, 4'd0, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0},
+        {4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0},
+        {4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0},
+        {4'd0, 4'd1, 4'd1, 4'd1, 4'd1, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd1, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd1, 4'd1, 4'd1, 4'd0, 4'd0, 4'd1, 4'd1, 4'd1, 4'd1, 4'd1, 4'd0, 4'd1, 4'd0},
+        {4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0},
+        {4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd1, 4'd1, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0},
+        {4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0, 4'd0, 4'd1, 4'd1, 4'd1, 4'd0, 4'd0, 4'd1, 4'd0, 4'd0, 4'd0, 4'd1, 4'd0, 4'd1, 4'd0},
+        {4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0, 4'd0}
     };
 
     parameter [0:8][0:4][3:0] num_zero = {  //
@@ -165,16 +184,26 @@ module sprite_distance (
      : units[sprite_render_y][sprite_render_x - 56])); // units
 
 
-    assign o_red = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][2] : 8'hXX;
-    assign o_green = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][1] : 8'hXX;
-    assign o_blue = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][0] : 8'hXX;
-    assign o_sprite_hit = ((sprite_hit_y & sprite_hit_x) && (selected_palette != 2'd0));
+    assign sprite_hit_fx = (i_x >= sprite_fx) && (i_x < sprite_fx + 16 * 31);
+    assign sprite_hit_fy = (i_y >= sprite_fy) && (i_y < sprite_fy + 16 * 9);
+    assign sprite_render_fx = (i_x - sprite_fx) >> 4;
+    assign sprite_render_fy = (i_y - sprite_fy) >> 4;
+
+    wire [1:0] selected_palette_f;
+
+    assign selected_palette_f = o_is_finished? finish[sprite_render_fy][sprite_render_fx] : 2'd0;
+
+    assign o_red    = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][2] : ((sprite_hit_fx && sprite_hit_fy)? palette_colors[selected_palette_f][2]: 8'hXX);
+    assign o_green  = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][1] : ((sprite_hit_fx && sprite_hit_fy)? palette_colors[selected_palette_f][1]: 8'hXX);
+    assign o_blue   = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][0] : ((sprite_hit_fx && sprite_hit_fy)? palette_colors[selected_palette_f][0]: 8'hXX);
+    assign o_sprite_hit = ((sprite_hit_y & sprite_hit_x) && (selected_palette != 2'd0))  || ((sprite_hit_fx && sprite_hit_fy) && (selected_palette_f != 2'd0));
 
     integer cnt = 0;
 
     always @(posedge i_v_sync) begin
+        if ( i_is_dead == 0) begin
         ++cnt;
-        if (cnt > 79) begin
+        if (cnt > 39) begin
         case (units)
             num_nine:  units <= num_eight;
             num_eight: units <= num_seven;
@@ -208,7 +237,7 @@ module sprite_distance (
                             num_two:   begin hundreads <= num_one;   tens <= num_nine;   end
                             num_one:   begin hundreads <= num_zero;  tens <= num_nine;   end
                             num_zero:  begin
-                                ;// fin
+                                o_is_finished <= 1; // fin
                                 end
                             default : hundreads <= num_zero;
                         endcase
@@ -220,6 +249,7 @@ module sprite_distance (
         endcase
         cnt <= 0;
         end
+    end
     end
 
 endmodule

@@ -5,6 +5,8 @@ module sprite_glacier2 (
     input wire [15:0] i_x,
     input wire [15:0] i_y,
     input wire i_v_sync,
+    input wire i_is_finished,
+    input wire i_is_dead,
     output wire [7:0] o_red,
     output wire [7:0] o_green,
     output wire [7:0] o_blue,
@@ -74,12 +76,14 @@ module sprite_glacier2 (
     assign o_sprite_hit = ((sprite_hit_y & sprite_hit_x) & (selected_palette != 2'd0));
 
     always @(posedge i_v_sync) begin
-        if (sprite_x <= 0 || sprite_y > 720 - 128) begin
-            sprite_x <= 16'd340 - 16'd64;
-            sprite_y <= 16'd160 - 16'd64;
-        end else begin
-            sprite_y <= sprite_y + 1;
-            sprite_x <= sprite_x - 1;
+        if (i_is_finished == 0 && i_is_dead == 0) begin
+            if (sprite_x <= 0 || sprite_y > 720 - 128) begin
+                sprite_x <= 16'd340 - 16'd64;
+                sprite_y <= 16'd160 - 16'd64;
+            end else begin
+                sprite_y <= sprite_y + 1;
+                sprite_x <= sprite_x - 1;
+            end
         end
     end
 

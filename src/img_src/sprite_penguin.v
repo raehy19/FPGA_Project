@@ -9,11 +9,15 @@ module sprite_penguin (
     input wire i_btn3,
     input wire i_v_sync,
     input wire i_scored,
+    input wire i_crushed,
+    input wire i_is_finished,
+    input wire i_is_dead,
     output wire [7:0] o_red,
     output wire [7:0] o_green,
     output wire [7:0] o_blue,
     output wire o_sprite_hit,
-    output reg [15:0] o_penguin_x
+    output reg [15:0] o_penguin_x,
+    output reg o_penguin_jump
 );
 
     reg [15:0] sprite_x = 16'd640 - 16'd64;
@@ -22,7 +26,10 @@ module sprite_penguin (
     wire [7:0] sprite_render_x;
     wire [7:0] sprite_render_y;
 
+    reg jumping = 0;
+
     assign o_penguin_x = sprite_x;
+    assign o_penguin_jump = jumping;
 
 
     localparam [0:7][2:0][7:0] palette_colors = {
@@ -334,49 +341,57 @@ module sprite_penguin (
 
     integer cnt = 0;
     integer jumpcnt = 0;
-    reg jumping = 0;
+    integer effectcnt = 0;
 
 
     always @(posedge i_v_sync) begin
-        // btn control
-        // right move 
-        if (i_btn1 && cnt % 20 == 0) begin
-            if (sprite_x == 16'd640 - 16'd64) sprite_x <= 16'd940 - 16'd64;
-            if (sprite_x == 16'd340 - 16'd64) sprite_x <= 16'd640 - 16'd64;
-        end
-        // left move 
-        if (i_btn3 && cnt % 20 == 0) begin
-            if (sprite_x == 16'd640 - 16'd64) sprite_x <= 16'd340 - 16'd64;
-            if (sprite_x == 16'd940 - 16'd64) sprite_x <= 16'd640 - 16'd64;
-        end
-        // jump
-        if (i_btn2 && cnt % 20 == 0) begin
-            jumping <= 1;
-        end
-
-        if (i_scored) begin  // coin effect
-            penguin_state = 4'd6;
-        end else if (jumping) begin  // jumping
-            if (jumpcnt < 50) penguin_state <= 4'd3;
-            else if (jumpcnt < 100) penguin_state <= 4'd4;
-            else if (jumpcnt < 150) penguin_state <= 4'd5;
-            else if (jumpcnt < 200) penguin_state <= 4'd4;
-            else if (jumpcnt < 250) penguin_state <= 4'd3;
-            else begin
-                penguin_state <= 4'd0;
-                jumpcnt <= 0;
-                jumping <= 0;
+        if (i_is_finished == 0 && i_is_dead == 0) begin
+            // btn control
+            // right move 
+            if (i_btn1 && cnt % 20 == 0) begin
+                if (sprite_x == 16'd640 - 16'd64) sprite_x <= 16'd940 - 16'd64;
+                if (sprite_x == 16'd340 - 16'd64) sprite_x <= 16'd640 - 16'd64;
             end
-            jumpcnt++;
-        end  // walk 
-        else if (cnt < 25) penguin_state <= 4'd0;
-        else if (cnt < 50) penguin_state <= 4'd1;
-        else if (cnt < 75) penguin_state <= 4'd0;
-        else if (cnt < 100) penguin_state <= 4'd2;
+            // left move 
+            if (i_btn3 && cnt % 20 == 0) begin
+                if (sprite_x == 16'd640 - 16'd64) sprite_x <= 16'd340 - 16'd64;
+                if (sprite_x == 16'd940 - 16'd64) sprite_x <= 16'd640 - 16'd64;
+            end
+            // jump
+            if (i_btn2 && cnt % 20 == 0) begin
+                jumping <= 1;
+            end
+            if ((penguin_state == 4'd6 || penguin_state == 4'd7)) begin
+                if (effectcnt < 100)++effectcnt;
 
-        // cnt
-        ++cnt;
-        if (cnt > 99) cnt = 0;
+            end else if (i_crushed) begin  // obstacle effect
+                penguin_state <= 4'd7;
+                effectcnt = 0;
+            end else if (i_scored) begin  // coin effect
+                penguin_state <= 4'd6;
+                effectcnt = 0;
+            end else if (jumping) begin  // jumping
+                if (jumpcnt < 50) penguin_state <= 4'd3;
+                else if (jumpcnt < 100) penguin_state <= 4'd4;
+                else if (jumpcnt < 150) penguin_state <= 4'd5;
+                else if (jumpcnt < 200) penguin_state <= 4'd4;
+                else if (jumpcnt < 250) penguin_state <= 4'd3;
+                else begin
+                    penguin_state <= 4'd0;
+                    jumpcnt <= 0;
+                    jumping <= 0;
+                end
+                jumpcnt++;
+            end  // walk 
+        else if (cnt < 25) penguin_state <= 4'd0;
+            else if (cnt < 50) penguin_state <= 4'd1;
+            else if (cnt < 75) penguin_state <= 4'd0;
+            else if (cnt < 100) penguin_state <= 4'd2;
+
+            // cnt
+            ++cnt;
+            if (cnt > 99) cnt = 0;
+        end
     end
 
 endmodule

@@ -33,13 +33,16 @@ module gfx (
     wire obstacle_center_hit, obstacle_right_hit, obstacle_left_hit;
     wire penguin_hit;
 
-
-    wire [1:0] game_state;  // 0 : playing, 1 : dead, 2 : finished
+    wire is_dead;
+    wire is_finished;
     wire [15:0] penguin_x;
+    wire penguin_jump;
     wire scored, scored1, scored2, scored3;
-    assign scored = scored1 | scored2 | scored3;
     wire crushed, crushed1, crushed2, crushed3;
+
+    assign scored  = scored1 | scored2 | scored3;
     assign crushed = crushed1 | crushed2 | crushed3;
+
 
     background_img bgimg (
         .i_x    (i_x),
@@ -49,24 +52,146 @@ module gfx (
         .o_blue (bg_blue)
     );
 
-    sprite_distance distance (
+    sprite_student_id student_id (
         .i_x         (i_x),
         .i_y         (i_y),
-        .i_v_sync    (i_v_sync),
-        .o_red       (distance_red),
-        .o_green     (distance_green),
-        .o_blue      (distance_blue),
-        .o_sprite_hit(distance_hit)
+        .o_red       (student_id_red),
+        .o_green     (student_id_green),
+        .o_blue      (student_id_blue),
+        .o_sprite_hit(student_id_hit)
+    );
+
+    sprite_glacier1 glacier1 (
+        .i_x          (i_x),
+        .i_y          (i_y),
+        .i_v_sync     (i_v_sync),
+        .i_is_finished(is_finished),
+        .i_is_dead    (is_dead),
+        .o_red        (glacier1_red),
+        .o_green      (glacier1_green),
+        .o_blue       (glacier1_blue),
+        .o_sprite_hit (glacier1_hit)
+    );
+
+    sprite_glacier2 glacier2 (
+        .i_x          (i_x),
+        .i_y          (i_y),
+        .i_v_sync     (i_v_sync),
+        .i_is_finished(is_finished),
+        .i_is_dead    (is_dead),
+        .o_red        (glacier2_red),
+        .o_green      (glacier2_green),
+        .o_blue       (glacier2_blue),
+        .o_sprite_hit (glacier2_hit)
+    );
+
+
+    sprite_coin_center coin_center (
+        .i_x          (i_x),
+        .i_y          (i_y),
+        .i_v_sync     (i_v_sync),
+        .i_penguin_x  (penguin_x),
+        .i_is_finished(is_finished),
+        .i_is_dead    (is_dead),
+        .o_red        (coin_center_red),
+        .o_green      (coin_center_green),
+        .o_blue       (coin_center_blue),
+        .o_sprite_hit (coin_center_hit),
+        .o_scored     (scored1)
+    );
+
+    sprite_coin_right coin_right (
+        .i_x          (i_x),
+        .i_y          (i_y),
+        .i_v_sync     (i_v_sync),
+        .i_penguin_x  (penguin_x),
+        .i_is_finished(is_finished),
+        .i_is_dead    (is_dead),
+        .o_red        (coin_right_red),
+        .o_green      (coin_right_green),
+        .o_blue       (coin_right_blue),
+        .o_sprite_hit (coin_right_hit),
+        .o_scored     (scored2)
+    );
+
+    sprite_coin_left coin_left (
+        .i_x          (i_x),
+        .i_y          (i_y),
+        .i_v_sync     (i_v_sync),
+        .i_penguin_x  (penguin_x),
+        .i_is_finished(is_finished),
+        .i_is_dead    (is_dead),
+        .o_red        (coin_left_red),
+        .o_green      (coin_left_green),
+        .o_blue       (coin_left_blue),
+        .o_sprite_hit (coin_left_hit),
+        .o_scored     (scored3)
+    );
+
+    sprite_obstacle_center obstacle_center (
+        .i_x          (i_x),
+        .i_y          (i_y),
+        .i_v_sync     (i_v_sync),
+        .i_penguin_x  (penguin_x),
+        .i_is_finished(is_finished),
+        .i_is_dead    (is_dead),
+        .o_red        (obstacle_center_red),
+        .o_green      (obstacle_center_green),
+        .o_blue       (obstacle_center_blue),
+        .o_sprite_hit (obstacle_center_hit),
+        .o_crushed    (crushed1)
+    );
+
+    sprite_obstacle_right obstacle_right (
+        .i_x          (i_x),
+        .i_y          (i_y),
+        .i_v_sync     (i_v_sync),
+        .i_penguin_x  (penguin_x),
+        .i_is_finished(is_finished),
+        .i_is_dead    (is_dead),
+        .o_red        (obstacle_right_red),
+        .o_green      (obstacle_right_green),
+        .o_blue       (obstacle_right_blue),
+        .o_sprite_hit (obstacle_right_hit),
+        .o_crushed    (crushed2)
+    );
+
+    sprite_obstacle_left obstacle_left (
+        .i_x          (i_x),
+        .i_y          (i_y),
+        .i_v_sync     (i_v_sync),
+        .i_penguin_x  (penguin_x),
+        .i_is_finished(is_finished),
+        .i_is_dead    (is_dead),
+        .o_red        (obstacle_left_red),
+        .o_green      (obstacle_left_green),
+        .o_blue       (obstacle_left_blue),
+        .o_sprite_hit (obstacle_left_hit),
+        .o_crushed    (crushed3)
+    );
+
+    sprite_distance distance (
+        .i_x          (i_x),
+        .i_y          (i_y),
+        .i_v_sync     (i_v_sync),
+        .i_is_dead    (is_dead),
+        .o_red        (distance_red),
+        .o_green      (distance_green),
+        .o_blue       (distance_blue),
+        .o_sprite_hit (distance_hit),
+        .o_is_finished(is_finished)
     );
 
     sprite_life life (
         .i_x         (i_x),
         .i_y         (i_y),
         .i_v_sync    (i_v_sync),
+        .i_crushed   (crushed),
         .o_red       (life_red),
         .o_green     (life_green),
         .o_blue      (life_blue),
-        .o_sprite_hit(life_hit)
+        .o_sprite_hit(life_hit),
+        .o_is_dead   (is_dead)
     );
 
     sprite_score score (
@@ -80,114 +205,23 @@ module gfx (
         .o_sprite_hit(score_hit)
     );
 
-    sprite_student_id student_id (
-        .i_x         (i_x),
-        .i_y         (i_y),
-        .o_red       (student_id_red),
-        .o_green     (student_id_green),
-        .o_blue      (student_id_blue),
-        .o_sprite_hit(student_id_hit)
-    );
-
-    sprite_glacier1 glacier1 (
-        .i_x         (i_x),
-        .i_y         (i_y),
-        .i_v_sync    (i_v_sync),
-        .o_red       (glacier1_red),
-        .o_green     (glacier1_green),
-        .o_blue      (glacier1_blue),
-        .o_sprite_hit(glacier1_hit)
-    );
-
-    sprite_glacier2 glacier2 (
-        .i_x         (i_x),
-        .i_y         (i_y),
-        .i_v_sync    (i_v_sync),
-        .o_red       (glacier2_red),
-        .o_green     (glacier2_green),
-        .o_blue      (glacier2_blue),
-        .o_sprite_hit(glacier2_hit)
-    );
-
     sprite_penguin penguin (
-        .i_x         (i_x),
-        .i_y         (i_y),
-        .i_btn1      (BTN1),
-        .i_btn2      (BTN2),
-        .i_btn3      (BTN3),
-        .i_v_sync    (i_v_sync),
-        .i_scored    (scored),
-        .o_red       (penguin_red),
-        .o_green     (penguin_green),
-        .o_blue      (penguin_blue),
-        .o_sprite_hit(penguin_hit),
-        .o_penguin_x (penguin_x)
-    );
-
-    sprite_coin_center coin_center (
-        .i_x         (i_x),
-        .i_y         (i_y),
-        .i_v_sync    (i_v_sync),
-        .i_penguin_x (penguin_x),
-        .o_red       (coin_center_red),
-        .o_green     (coin_center_green),
-        .o_blue      (coin_center_blue),
-        .o_sprite_hit(coin_center_hit),
-        .o_scored    (scored1)
-    );
-
-    sprite_coin_right coin_right (
-        .i_x         (i_x),
-        .i_y         (i_y),
-        .i_v_sync    (i_v_sync),
-        .i_penguin_x (penguin_x),
-        .o_red       (coin_right_red),
-        .o_green     (coin_right_green),
-        .o_blue      (coin_right_blue),
-        .o_sprite_hit(coin_right_hit),
-        .o_scored    (scored2)
-    );
-
-    sprite_coin_left coin_left (
-        .i_x         (i_x),
-        .i_y         (i_y),
-        .i_v_sync    (i_v_sync),
-        .i_penguin_x (penguin_x),
-        .o_red       (coin_left_red),
-        .o_green     (coin_left_green),
-        .o_blue      (coin_left_blue),
-        .o_sprite_hit(coin_left_hit),
-        .o_scored    (scored3)
-    );
-
-    sprite_obstacle_center obstacle_center (
-        .i_x         (i_x),
-        .i_y         (i_y),
-        .i_v_sync    (i_v_sync),
-        .o_red       (obstacle_center_red),
-        .o_green     (obstacle_center_green),
-        .o_blue      (obstacle_center_blue),
-        .o_sprite_hit(obstacle_center_hit)
-    );
-
-    sprite_obstacle_right obstacle_right (
-        .i_x         (i_x),
-        .i_y         (i_y),
-        .i_v_sync    (i_v_sync),
-        .o_red       (obstacle_right_red),
-        .o_green     (obstacle_right_green),
-        .o_blue      (obstacle_right_blue),
-        .o_sprite_hit(obstacle_right_hit)
-    );
-
-    sprite_obstacle_left obstacle_left (
-        .i_x         (i_x),
-        .i_y         (i_y),
-        .i_v_sync    (i_v_sync),
-        .o_red       (obstacle_left_red),
-        .o_green     (obstacle_left_green),
-        .o_blue      (obstacle_left_blue),
-        .o_sprite_hit(obstacle_left_hit)
+        .i_x           (i_x),
+        .i_y           (i_y),
+        .i_btn1        (BTN1),
+        .i_btn2        (BTN2),
+        .i_btn3        (BTN3),
+        .i_v_sync      (i_v_sync),
+        .i_scored      (scored),
+        .i_crushed     (crushed),
+        .i_is_finished (is_finished),
+        .i_is_dead     (is_dead),
+        .o_red         (penguin_red),
+        .o_green       (penguin_green),
+        .o_blue        (penguin_blue),
+        .o_sprite_hit  (penguin_hit),
+        .o_penguin_x   (penguin_x),
+        .o_penguin_jump(penguin_jump)
     );
 
     always @(*) begin

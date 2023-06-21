@@ -11,7 +11,7 @@
 set_property -dict { PACKAGE_PIN H16   IOSTANDARD LVCMOS33  } [get_ports {CLK}]; #IO_L11N_T1_SRCC_35 Sch=hdmi_tx_clk_n
 #create_clock -name clk_100m -period 10.00 [get_ports {CLK}];
 #create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports {CLK}];
-create_clock -period 5.000 -name sys_clk_pin -waveform {0.000 5.000} -add [get_ports CLK]
+create_clock -period 10.000 -name sys_clk_pin -waveform {0.000 5.000} -add [get_ports CLK]
 
 #$set_property -dict { PACKAGE_PIN L17   IOSTANDARD TMDS_33  } [get_ports  hdmi_tx_clk_n]; #IO_L11N_T1_SRCC_35 Sch=hdmi_tx_clk_n
 #set_property -dict { PACKAGE_PIN L16   IOSTANDARD TMDS_33  } [get_ports  hdmi_tx_clk_p]; #IO_L11P_T1_SRCC_35 Sch=hdmi_tx_clk_p

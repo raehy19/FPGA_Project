@@ -6,11 +6,13 @@ module sprite_coin_left (
     input wire [15:0] i_y,
     input wire i_v_sync,
     input wire [15:0] i_penguin_x,
+    input wire i_is_finished,
+    input wire i_is_dead,
     output wire [7:0] o_red,
     output wire [7:0] o_green,
     output wire [7:0] o_blue,
     output wire o_sprite_hit,
-    output wire o_scored
+    output reg o_scored
 );
 
 
@@ -79,7 +81,7 @@ module sprite_coin_left (
         : (sprite_y < 450) ? (i_y - sprite_y) >> 1  // x2
         : (i_y - sprite_y) >> 2;  // x4
 
-    assign o_scored = (sprite_y > 500 && sprite_y < 720 - 128 && i_penguin_x == 16'd340 - 16'd64);
+    assign o_scored = (sprite_y > 540 && sprite_y < 550 && i_penguin_x == 16'd340 - 16'd64);
 
     wire [1:0] selected_palette;
 
@@ -93,21 +95,22 @@ module sprite_coin_left (
     integer delay = 0;
 
     always @(posedge i_v_sync) begin
-        if (o_scored) begin
-            sprite_y = 1000;
-        end
-        if (sprite_y >= 720 - 128) begin
-            ++delay;
-            if (delay > 1300) begin
-                sprite_y <= 0;
-                delay <= 0;
+        if (i_is_finished == 0 && i_is_dead == 0) begin
+            if (o_scored) begin
+                sprite_y <= 1000;
             end
-        end else begin
-            sprite_y <= sprite_y + 1;
+            if (sprite_y >= 720 - 128) begin
+                ++delay;
+                if (delay > 1300) begin
+                    sprite_y <= 0;
+                    delay <= 0;
+                end
+            end else begin
+                sprite_y <= sprite_y + 1;
+            end
+            sprite_x = (sprite_y <= 300) ? 16'd640 - (sprite_y >> 1) - 16'd16  // x1
+            : (sprite_y <= 450) ? 16'd640 - (sprite_y >> 1) - 16'd32  // x2
+            : 16'd640 - (sprite_y >> 1) - 16'd64;  // x4
         end
-        sprite_x = (sprite_y <= 300) ? 16'd640 - (sprite_y >> 1) - 16'd16  // x1
-        : (sprite_y <= 450) ? 16'd640 - (sprite_y >> 1) - 16'd32  // x2
-        : 16'd640 - (sprite_y >> 1) - 16'd64;  // x4
     end
-
 endmodule
