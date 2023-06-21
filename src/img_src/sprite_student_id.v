@@ -1,3 +1,6 @@
+`timescale 1ns / 1ps
+
+
 module sprite_student_id (
     input wire [15:0] i_x,
     input wire [15:0] i_y,

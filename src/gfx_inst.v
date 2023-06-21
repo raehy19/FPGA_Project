@@ -18,8 +18,10 @@ module gfx (
     wire [7:0] glacier1_red, glacier1_green, glacier1_blue;
     wire [7:0] glacier2_red, glacier2_green, glacier2_blue;
     wire [7:0] coin_center_red, coin_center_green, coin_center_blue;
+    wire [7:0] coin_right_red, coin_right_green, coin_right_blue;
+    wire [7:0] coin_left_red, coin_left_green, coin_left_blue;
     wire [7:0] penguin_red, penguin_green, penguin_blue;
-    wire student_id_hit, glacier1_hit, glacier2_hit, coin_center_hit, penguin_hit;
+    wire student_id_hit, glacier1_hit, glacier2_hit, coin_center_hit, coin_right_hit, coin_left_hit, penguin_hit;
 
     background_img bgimg (
         .i_x    (i_x),
@@ -81,6 +83,26 @@ module gfx (
         .o_sprite_hit(coin_center_hit)
     );
 
+    sprite_coin_right coin_right (
+        .i_x         (i_x),
+        .i_y         (i_y),
+        .i_v_sync    (i_v_sync),
+        .o_red       (coin_right_red),
+        .o_green     (coin_right_green),
+        .o_blue      (coin_right_blue),
+        .o_sprite_hit(coin_right_hit)
+    );
+
+    sprite_coin_left coin_left (
+        .i_x         (i_x),
+        .i_y         (i_y),
+        .i_v_sync    (i_v_sync),
+        .o_red       (coin_left_red),
+        .o_green     (coin_left_green),
+        .o_blue      (coin_left_blue),
+        .o_sprite_hit(coin_left_hit)
+    );
+
     always @(*) begin
         if (student_id_hit == 1) begin
             o_red   = student_id_red;
@@ -102,6 +124,14 @@ module gfx (
             o_red   = coin_center_red;
             o_green = coin_center_green;
             o_blue  = coin_center_blue;
+        end else if (coin_right_hit == 1) begin
+            o_red   = coin_right_red;
+            o_green = coin_right_green;
+            o_blue  = coin_right_blue;
+        end else if (coin_left_hit == 1) begin
+            o_red   = coin_left_red;
+            o_green = coin_left_green;
+            o_blue  = coin_left_blue;
         end else begin
             o_red   = bg_red;
             o_green = bg_green;
