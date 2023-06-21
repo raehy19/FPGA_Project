@@ -8,10 +8,12 @@ module sprite_penguin (
     input wire i_btn2,
     input wire i_btn3,
     input wire i_v_sync,
+    input wire i_scored,
     output wire [7:0] o_red,
     output wire [7:0] o_green,
     output wire [7:0] o_blue,
-    output wire o_sprite_hit
+    output wire o_sprite_hit,
+    output reg [15:0] o_penguin_x
 );
 
     reg [15:0] sprite_x = 16'd640 - 16'd64;
@@ -19,6 +21,8 @@ module sprite_penguin (
     wire sprite_hit_x, sprite_hit_y;
     wire [7:0] sprite_render_x;
     wire [7:0] sprite_render_y;
+
+    assign o_penguin_x = sprite_x;
 
 
     localparam [0:7][2:0][7:0] palette_colors = {
@@ -313,19 +317,19 @@ module sprite_penguin (
     wire [2:0] selected_palette;
     reg  [3:0] penguin_state = 4'd0;
 
-    assign selected_palette = (penguin_state == 4'd0) ? penguin_default[sprite_render_y][sprite_render_x] 
-                           :  (penguin_state == 4'd1) ? penguin_right[sprite_render_y][sprite_render_x]  
-                           :  (penguin_state == 4'd2) ? penguin_left[sprite_render_y][sprite_render_x]  
-                           :  (penguin_state == 4'd3) ? penguin_jump1[sprite_render_y][sprite_render_x]  
-                           :  (penguin_state == 4'd4) ? penguin_jump2[sprite_render_y][sprite_render_x]  
-                           :  (penguin_state == 4'd5) ? penguin_jump3[sprite_render_y][sprite_render_x]  
-                           :  (penguin_state == 4'd6) ? penguin_coin_effect[sprite_render_y][sprite_render_x]  
-                           :  penguin_obstacle_effect[sprite_render_y][sprite_render_x];
+    assign selected_palette = (penguin_state == 4'd0) ? penguin_default[sprite_render_y][sprite_render_x]  //
+ : (penguin_state == 4'd1) ? penguin_right[sprite_render_y][sprite_render_x]  //
+ : (penguin_state == 4'd2) ? penguin_left[sprite_render_y][sprite_render_x]  //
+ : (penguin_state == 4'd3) ? penguin_jump1[sprite_render_y][sprite_render_x]  //
+ : (penguin_state == 4'd4) ? penguin_jump2[sprite_render_y][sprite_render_x]  //
+ : (penguin_state == 4'd5) ? penguin_jump3[sprite_render_y][sprite_render_x]  //
+ : (penguin_state == 4'd6) ? penguin_coin_effect[sprite_render_y][sprite_render_x]  //
+ : penguin_obstacle_effect[sprite_render_y][sprite_render_x];  //
 
-    assign o_red = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][2] : 8'hXX;
-    assign o_green = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][1] : 8'hXX;
-    assign o_blue = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][0] : 8'hXX;
-    assign o_sprite_hit = ((sprite_hit_y & sprite_hit_x) & (selected_palette != 2'd0));
+    assign o_red            = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][2] : 8'hXX;
+    assign o_green          = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][1] : 8'hXX;
+    assign o_blue           = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][0] : 8'hXX;
+    assign o_sprite_hit     = ((sprite_hit_y & sprite_hit_x) & (selected_palette != 2'd0));
 
 
     integer cnt = 0;
@@ -350,10 +354,9 @@ module sprite_penguin (
             jumping <= 1;
         end
 
-
-        // jump or walk
-        // jump
-        if (jumping) begin
+        if (i_scored) begin  // coin effect
+            penguin_state = 4'd6;
+        end else if (jumping) begin  // jumping
             if (jumpcnt < 50) penguin_state <= 4'd3;
             else if (jumpcnt < 100) penguin_state <= 4'd4;
             else if (jumpcnt < 150) penguin_state <= 4'd5;

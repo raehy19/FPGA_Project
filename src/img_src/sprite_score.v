@@ -5,6 +5,7 @@ module sprite_score (
     input wire [15:0] i_x,
     input wire [15:0] i_y,
     input wire i_v_sync,
+    input wire i_scored,
     output wire [7:0] o_red,
     output wire [7:0] o_green,
     output wire [7:0] o_blue,
@@ -180,11 +181,9 @@ module sprite_score (
     assign o_blue = (sprite_hit_x && sprite_hit_y) ? palette_colors[selected_palette][0] : 8'hXX;
     assign o_sprite_hit = ((sprite_hit_y & sprite_hit_x) && (selected_palette != 2'd0));
 
-    integer cnt = 0;
+    integer temp_stored = 0;
 
-    always @(posedge i_v_sync) begin
-        ++cnt;
-        if (cnt > 79) begin
+    always @(posedge i_scored) begin
         case (units)   
             num_nine: begin
                 case (tens)
@@ -210,8 +209,6 @@ module sprite_score (
             num_one:   units <=num_two;   
             num_zero:  units <=num_one;
         endcase
-        cnt = 0;
+        temp_stored = 0;
         end
-    end
-
 endmodule

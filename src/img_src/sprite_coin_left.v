@@ -5,10 +5,12 @@ module sprite_coin_left (
     input wire [15:0] i_x,
     input wire [15:0] i_y,
     input wire i_v_sync,
+    input wire [15:0] i_penguin_x,
     output wire [7:0] o_red,
     output wire [7:0] o_green,
     output wire [7:0] o_blue,
-    output wire o_sprite_hit
+    output wire o_sprite_hit,
+    output wire o_scored
 );
 
 
@@ -77,6 +79,8 @@ module sprite_coin_left (
         : (sprite_y < 450) ? (i_y - sprite_y) >> 1  // x2
         : (i_y - sprite_y) >> 2;  // x4
 
+    assign o_scored = (sprite_y > 500 && sprite_y < 720 - 128 && i_penguin_x == 16'd340 - 16'd64);
+
     wire [1:0] selected_palette;
 
     assign selected_palette = sprite_data[sprite_render_y][sprite_render_x];
@@ -89,6 +93,9 @@ module sprite_coin_left (
     integer delay = 0;
 
     always @(posedge i_v_sync) begin
+        if (o_scored) begin
+            sprite_y = 1000;
+        end
         if (sprite_y >= 720 - 128) begin
             ++delay;
             if (delay > 1300) begin
