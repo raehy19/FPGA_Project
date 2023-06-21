@@ -11,8 +11,8 @@ module gfx (
     output reg [7:0] o_red,
     output reg [7:0] o_green,
     output reg [7:0] o_blue
-
 );
+
     wire [7:0] bg_red, bg_green, bg_blue;
     wire [7:0] student_id_red, student_id_green, student_id_blue;
     wire [7:0] distance_red, distance_green, distance_blue;
@@ -21,8 +21,15 @@ module gfx (
     wire [7:0] coin_center_red, coin_center_green, coin_center_blue;
     wire [7:0] coin_right_red, coin_right_green, coin_right_blue;
     wire [7:0] coin_left_red, coin_left_green, coin_left_blue;
+    wire [7:0] obstacle_center_red, obstacle_center_green, obstacle_center_blue;
+    wire [7:0] obstacle_right_red, obstacle_right_green, obstacle_right_blue;
+    wire [7:0] obstacle_left_red, obstacle_left_green, obstacle_left_blue;
     wire [7:0] penguin_red, penguin_green, penguin_blue;
-    wire student_id_hit, distance_hit, glacier1_hit, glacier2_hit, coin_center_hit, coin_right_hit, coin_left_hit, penguin_hit;
+    wire student_id_hit, distance_hit;
+    wire glacier1_hit, glacier2_hit;
+    wire coin_center_hit, coin_right_hit, coin_left_hit;
+    wire obstacle_center_hit, obstacle_right_hit, obstacle_left_hit;
+    wire penguin_hit;
 
     background_img bgimg (
         .i_x    (i_x),
@@ -114,6 +121,36 @@ module gfx (
         .o_sprite_hit(coin_left_hit)
     );
 
+    sprite_obstacle_center obstacle_center (
+        .i_x         (i_x),
+        .i_y         (i_y),
+        .i_v_sync    (i_v_sync),
+        .o_red       (obstacle_center_red),
+        .o_green     (obstacle_center_green),
+        .o_blue      (obstacle_center_blue),
+        .o_sprite_hit(obstacle_center_hit)
+    );
+
+    sprite_obstacle_right obstacle_right (
+        .i_x         (i_x),
+        .i_y         (i_y),
+        .i_v_sync    (i_v_sync),
+        .o_red       (obstacle_right_red),
+        .o_green     (obstacle_right_green),
+        .o_blue      (obstacle_right_blue),
+        .o_sprite_hit(obstacle_right_hit)
+    );
+
+    sprite_obstacle_left obstacle_left (
+        .i_x         (i_x),
+        .i_y         (i_y),
+        .i_v_sync    (i_v_sync),
+        .o_red       (obstacle_left_red),
+        .o_green     (obstacle_left_green),
+        .o_blue      (obstacle_left_blue),
+        .o_sprite_hit(obstacle_left_hit)
+    );
+
     always @(*) begin
         if (student_id_hit == 1) begin
             o_red   = student_id_red;
@@ -147,6 +184,18 @@ module gfx (
             o_red   = coin_left_red;
             o_green = coin_left_green;
             o_blue  = coin_left_blue;
+        end else if (obstacle_center_hit == 1) begin
+            o_red   = obstacle_center_red;
+            o_green = obstacle_center_green;
+            o_blue  = obstacle_center_blue;
+        end else if (obstacle_right_hit == 1) begin
+            o_red   = obstacle_right_red;
+            o_green = obstacle_right_green;
+            o_blue  = obstacle_right_blue;
+        end else if (obstacle_left_hit == 1) begin
+            o_red   = obstacle_left_red;
+            o_green = obstacle_left_green;
+            o_blue  = obstacle_left_blue;
         end else begin
             o_red   = bg_red;
             o_green = bg_green;
